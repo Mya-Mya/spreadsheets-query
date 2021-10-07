@@ -1,11 +1,11 @@
 /**
- * @typedef {String} PredicateType
+ * @typedef {String} ComparingType
  */
 
 /**
  * @readonly
- * @enum {PredicateType} */
-const PredicateTypes = {
+ * @enum {ComparingType} */
+const ComparingTypes = {
   //String
   STRING_EQUALS: "StringEquals",
   STRING_STARTS_WITH: "StringStartsWith",
@@ -27,4 +27,4 @@ const PredicateTypes = {
   //Boolean
   BOOLEAN: "Boolean",
 };
-export default PredicateTypes;
+export default ComparingTypes;

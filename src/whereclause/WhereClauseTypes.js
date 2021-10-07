@@ -8,6 +8,6 @@
 const WhereClauseTypes = {
   AND: "And",
   OR: "Or",
-  PREDICATE: "Predicate",
+  COMPARING: "Comparing",
 };
 export default WhereClauseTypes;

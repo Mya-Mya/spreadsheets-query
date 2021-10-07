@@ -7,8 +7,8 @@ import WhereClause from "../whereclause/WhereClause";
 import WhereClauseTypes from "../whereclause/WhereClauseTypes";
 import And from "../whereclause/And";
 import Or from "../whereclause/Or";
-import Predicate from "../whereclause/Predicate";
-import PredicateTypes from "../whereclause/PredicateTypes";
+import Comparing from "../whereclause/Comparing";
+import ComparingTypes from "../whereclause/ComparingTypes";
 
 /**@type {RegExp} */
 const INJECTING_STRING_PATTERN = /["'`]/g;
@@ -33,8 +33,8 @@ class WhereClauseCreator {
         return this._getAndClause(/**@type {And}*/ (whereClause));
       case WhereClauseTypes.OR:
         return this._getOrClause(/**@type {Or} */ (whereClause));
-      case WhereClauseTypes.PREDICATE:
-        return this._getPredicateClause(/**@type {Predicate} */ (whereClause));
+      case WhereClauseTypes.COMPARING:
+        return this._getComparingClause(/**@type {Comparing} */ (whereClause));
     }
     throw new Error(`Invalid Where Clause type : ${type}`);
   }
@@ -63,53 +63,53 @@ class WhereClauseCreator {
   }
   /**
    *
-   * @param {Predicate} predicate
+   * @param {Comparing} comparing
    * @returns {String}
    */
-  _getPredicateClause(predicate) {
-    const c = this._mapColumnNameToColumnId[predicate.getColumnName()];
-    const f = predicate.getFieldValue();
-    switch (predicate.getPredicateType()) {
+  _getComparingClause(comparing) {
+    const c = this._mapColumnNameToColumnId[comparing.getColumnName()];
+    const f = comparing.getValue();
+    switch (comparing.getComparingType()) {
       //String
-      case PredicateTypes.STRING_EQUALS:
+      case ComparingTypes.STRING_EQUALS:
         return this._getStringPredicateClause(c, f, "=");
-      case PredicateTypes.STRING_STARTS_WITH:
+      case ComparingTypes.STRING_STARTS_WITH:
         return this._getStringPredicateClause(c, f, "STARTS WITH");
-      case PredicateTypes.STRING_ENDS_WITH:
+      case ComparingTypes.STRING_ENDS_WITH:
         return this._getStringPredicateClause(c, f, "ENDS WITH");
-      case PredicateTypes.STRING_CONTAINS:
+      case ComparingTypes.STRING_CONTAINS:
         return this._getStringPredicateClause(c, f, "CONTAINS");
       //StringNot
-      case PredicateTypes.STRING_NOT_EQUALS:
+      case ComparingTypes.STRING_NOT_EQUALS:
         return this._getStringPredicateClause(c, f, "!=");
-      case PredicateTypes.STRING_NOT_STARTS_WITH:
+      case ComparingTypes.STRING_NOT_STARTS_WITH:
         return this._notPredicateClause(
           this._getStringPredicateClause(c, f, "STARTS WITH")
         );
-      case PredicateTypes.STRING_NOT_ENDS_WITH:
+      case ComparingTypes.STRING_NOT_ENDS_WITH:
         return this._notPredicateClause(
           this._getStringPredicateClause(c, f, "ENDS WITH")
         );
-      case PredicateTypes.STRING_NOT_CONTAINS:
+      case ComparingTypes.STRING_NOT_CONTAINS:
         return this._notPredicateClause(
           this._getStringPredicateClause(c, f, "CONTAINS")
         );
       //Number
-      case PredicateTypes.NUMBER_EQUALS:
+      case ComparingTypes.NUMBER_EQUALS:
         return this._getNumberPredicateClause(c, f, "=");
-      case PredicateTypes.NUMBER_LAGER_THAN:
+      case ComparingTypes.NUMBER_LAGER_THAN:
         return this._getNumberPredicateClause(c, f, ">");
-      case PredicateTypes.NUMBER_LAGER_OR_EQUALS:
+      case ComparingTypes.NUMBER_LAGER_OR_EQUALS:
         return this._getNumberPredicateClause(c, f, ">=");
-      case PredicateTypes.NUMBER_LESS_THAN:
+      case ComparingTypes.NUMBER_LESS_THAN:
         return this._getNumberPredicateClause(c, f, "<");
-      case PredicateTypes.NUMBER_LESS_OR_EQUALS:
+      case ComparingTypes.NUMBER_LESS_OR_EQUALS:
         return this._getNumberPredicateClause(c, f, "<=");
       //NumberNot
-      case PredicateTypes.NUMBER_NOT_EQUALS:
+      case ComparingTypes.NUMBER_NOT_EQUALS:
         return this._getNumberPredicateClause(c, f, "!=");
       //Boolean
-      case PredicateTypes.BOOLEAN:
+      case ComparingTypes.BOOLEAN:
         return this._getBooleanPredicateClause(c, f);
     }
   }
