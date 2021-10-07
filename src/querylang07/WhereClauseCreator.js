@@ -9,9 +9,7 @@ import And from "../whereclause/And";
 import Or from "../whereclause/Or";
 import Comparing from "../whereclause/Comparing";
 import ComparingTypes from "../whereclause/ComparingTypes";
-
-/**@type {RegExp} */
-const INJECTING_STRING_PATTERN = /["'`]/g;
+import { removeStringComparingClauseInjector } from "./security";
 
 class WhereClauseCreator {
   /**
@@ -115,7 +113,7 @@ class WhereClauseCreator {
    * @param {String} operator
    */
   _getStringComparingClause(columnId, value, operator) {
-    const valueString = this._removeInjectingString(value);
+    const valueString = removeStringComparingClauseInjector(value);
     return `${columnId} ${operator} '${valueString}'`;
   }
 
@@ -143,14 +141,6 @@ class WhereClauseCreator {
     const valueBoolean = Boolean(value);
     const valueBooleanExpr = valueBoolean ? "true" : "false";
     return `${columnId} = ${valueBooleanExpr}`;
-  }
-  /**
-   *
-   * @param {String} text
-   * @returns {String}
-   */
-  _removeInjectingString(text) {
-    return text.replace(INJECTING_STRING_PATTERN, "");
   }
 }
 
