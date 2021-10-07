@@ -72,45 +72,39 @@ class WhereClauseCreator {
     switch (comparing.getComparingType()) {
       //String
       case ComparingTypes.STRING_EQUALS:
-        return this._getStringPredicateClause(c, f, "=");
+        return this._getStringComparingClause(c, f, "=");
       case ComparingTypes.STRING_STARTS_WITH:
-        return this._getStringPredicateClause(c, f, "STARTS WITH");
+        return this._getStringComparingClause(c, f, "STARTS WITH");
       case ComparingTypes.STRING_ENDS_WITH:
-        return this._getStringPredicateClause(c, f, "ENDS WITH");
+        return this._getStringComparingClause(c, f, "ENDS WITH");
       case ComparingTypes.STRING_CONTAINS:
-        return this._getStringPredicateClause(c, f, "CONTAINS");
+        return this._getStringComparingClause(c, f, "CONTAINS");
       //StringNot
       case ComparingTypes.STRING_NOT_EQUALS:
-        return this._getStringPredicateClause(c, f, "!=");
+        return this._getStringComparingClause(c, f, "!=");
       case ComparingTypes.STRING_NOT_STARTS_WITH:
-        return this._notPredicateClause(
-          this._getStringPredicateClause(c, f, "STARTS WITH")
-        );
+        return this._not(this._getStringComparingClause(c, f, "STARTS WITH"));
       case ComparingTypes.STRING_NOT_ENDS_WITH:
-        return this._notPredicateClause(
-          this._getStringPredicateClause(c, f, "ENDS WITH")
-        );
+        return this._not(this._getStringComparingClause(c, f, "ENDS WITH"));
       case ComparingTypes.STRING_NOT_CONTAINS:
-        return this._notPredicateClause(
-          this._getStringPredicateClause(c, f, "CONTAINS")
-        );
+        return this._not(this._getStringComparingClause(c, f, "CONTAINS"));
       //Number
       case ComparingTypes.NUMBER_EQUALS:
-        return this._getNumberPredicateClause(c, f, "=");
+        return this._getNumberComparingClause(c, f, "=");
       case ComparingTypes.NUMBER_LAGER_THAN:
-        return this._getNumberPredicateClause(c, f, ">");
+        return this._getNumberComparingClause(c, f, ">");
       case ComparingTypes.NUMBER_LAGER_OR_EQUALS:
-        return this._getNumberPredicateClause(c, f, ">=");
+        return this._getNumberComparingClause(c, f, ">=");
       case ComparingTypes.NUMBER_LESS_THAN:
-        return this._getNumberPredicateClause(c, f, "<");
+        return this._getNumberComparingClause(c, f, "<");
       case ComparingTypes.NUMBER_LESS_OR_EQUALS:
-        return this._getNumberPredicateClause(c, f, "<=");
+        return this._getNumberComparingClause(c, f, "<=");
       //NumberNot
       case ComparingTypes.NUMBER_NOT_EQUALS:
-        return this._getNumberPredicateClause(c, f, "!=");
+        return this._getNumberComparingClause(c, f, "!=");
       //Boolean
       case ComparingTypes.BOOLEAN:
-        return this._getBooleanPredicateClause(c, f);
+        return this._getBooleanComparingClause(c, f);
     }
   }
 
@@ -120,7 +114,7 @@ class WhereClauseCreator {
    * @param {any} fieldValue
    * @param {String} operator
    */
-  _getStringPredicateClause(columnId, fieldValue, operator) {
+  _getStringComparingClause(columnId, fieldValue, operator) {
     const fieldValueString = this._removeInjectingString(fieldValue);
     return `${columnId} ${operator} '${fieldValueString}'`;
   }
@@ -130,7 +124,7 @@ class WhereClauseCreator {
    * @param {String} clause
    * @returns {String}
    */
-  _notPredicateClause(clause) {
+  _not(clause) {
     return `NOT ${clause}`;
   }
 
@@ -140,12 +134,12 @@ class WhereClauseCreator {
    * @param {any} fieldValue
    * @param {String} operator
    */
-  _getNumberPredicateClause(columnId, fieldValue, operator) {
+  _getNumberComparingClause(columnId, fieldValue, operator) {
     const fieldValueNumber = Number(fieldValue);
     return `${columnId} ${operator} ${fieldValueNumber.toString()}`;
   }
 
-  _getBooleanPredicateClause(columnId, fieldValue) {
+  _getBooleanComparingClause(columnId, fieldValue) {
     const fieldValueBoolean = Boolean(fieldValue);
     const fieldValueBooleanExpr = fieldValueBoolean ? "true" : "false";
     return `${columnId} = ${fieldValueBooleanExpr}`;
