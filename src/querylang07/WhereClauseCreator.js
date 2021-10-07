@@ -3,12 +3,12 @@
  * Query Language Reference (Version 0.7)
  * https://developers.google.com/chart/interactive/docs/querylanguage
  */
-import Proposition from "../proposition/Proposition";
-import PropositionTypes from "../proposition/PropositionTypes";
-import And from "../proposition/And";
-import Or from "../proposition/Or";
-import Predicate from "../proposition/Predicate";
-import PredicateTypes from "../proposition/PredicateTypes";
+import WhereClause from "../whereclause/WhereClause";
+import WhereClauseTypes from "../whereclause/WhereClauseTypes";
+import And from "../whereclause/And";
+import Or from "../whereclause/Or";
+import Predicate from "../whereclause/Predicate";
+import PredicateTypes from "../whereclause/PredicateTypes";
 
 /**@type {RegExp} */
 const INJECTING_STRING_PATTERN = /["'`]/g;
@@ -23,41 +23,41 @@ class WhereClauseCreator {
   }
   /**
    *
-   * @param {Proposition} proposition
+   * @param {WhereClause} whereClause
    * @returns {String}
    */
-  getWhereClause(proposition) {
-    const type = proposition.getType();
+  createWhereClauseText(whereClause) {
+    const type = whereClause.getType();
     switch (type) {
-      case PropositionTypes.AND:
-        return this._getAndClause(/**@type {And}*/ (proposition));
-      case PropositionTypes.OR:
-        return this._getOrClause(/**@type {Or} */ (proposition));
-      case PropositionTypes.PREDICATE:
-        return this._getPredicateClause(/**@type {Predicate} */ (proposition));
+      case WhereClauseTypes.AND:
+        return this._getAndClause(/**@type {And}*/ (whereClause));
+      case WhereClauseTypes.OR:
+        return this._getOrClause(/**@type {Or} */ (whereClause));
+      case WhereClauseTypes.PREDICATE:
+        return this._getPredicateClause(/**@type {Predicate} */ (whereClause));
     }
-    throw new Error(`Invalid Proposition type : ${type}`);
+    throw new Error(`Invalid Where Clause type : ${type}`);
   }
   /**
-   * @param {And} andProposition
+   * @param {And} andClause
    * @returns {String}
    */
-  _getAndClause(andProposition) {
-    const propositions = andProposition.getPropositions();
-    const childClauses = propositions.map((proposition) =>
-      this.getWhereClause(proposition)
+  _getAndClause(andClause) {
+    const clauses = andClause.getWhereClauses();
+    const childClauses = clauses.map((clause) =>
+      this.createWhereClauseText(clause)
     );
     return `(${childClauses.join(" AND ")})`;
   }
   /**
    *
-   * @param {Or} orProposition
+   * @param {Or} orClause
    * @returns {String}
    */
-  _getOrClause(orProposition) {
-    const propositions = orProposition.getPropositions();
-    const childClauses = propositions.map((proposition) =>
-      this.getWhereClause(proposition)
+  _getOrClause(orClause) {
+    const clauses = orClause.getWhereClauses();
+    const childClauses = clauses.map((clause) =>
+      this.createWhereClauseText(clause)
     );
     return `(${childClauses.join(" OR ")})`;
   }

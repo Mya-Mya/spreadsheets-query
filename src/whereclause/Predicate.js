@@ -1,8 +1,8 @@
-import Proposition from "./Proposition";
-import PropositionTypes from "./PropositionTypes";
+import WhereClause from "./WhereClause";
+import WhereClauseTypes from "./WhereClauseTypes";
 import { PredicateType } from "./PredicateTypes";
 
-class Predicate extends Proposition {
+class Predicate extends WhereClause {
   /**
    * @param {String} columnName
    * @param {PredicateType} predicateType
@@ -18,7 +18,7 @@ class Predicate extends Proposition {
     this._fieldValue = fieldValue;
   }
   getType() {
-    return PropositionTypes.PREDICATE;
+    return WhereClauseTypes.PREDICATE;
   }
   /**
    * @returns {PredicateType}

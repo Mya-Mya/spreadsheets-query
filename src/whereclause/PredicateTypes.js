@@ -1,8 +1,10 @@
 /**
- * @typedef {*} PredicateType
+ * @typedef {String} PredicateType
  */
 
-/**@readonly @enum {PredicateType} */
+/**
+ * @readonly
+ * @enum {PredicateType} */
 const PredicateTypes = {
   //String
   STRING_EQUALS: "StringEquals",
