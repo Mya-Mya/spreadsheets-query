@@ -1,0 +1,4 @@
+**/**
+!out/bundle.gs
+!appsscript.json
+!remotetest.gs

@@ -1,0 +1,23 @@
+{
+  "name": "spreadsheets-query",
+  "version": "1.0.0",
+  "description": "spreadsheets-query",
+  "main": "src/index.js",
+  "author": "Mya-Mya",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "webpack --mode development",
+    "test": "mocha --require @babel/register"
+  },
+  "dependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/register": "^7.15.3",
+    "@types/google-apps-script": "^1.0.37",
+    "babel-preset-env": "^1.7.0",
+    "gas-webpack-plugin": "^2.1.0",
+    "mocha": "^9.1.2",
+    "underscore": "^1.13.1",
+    "webpack": "^5.57.1",
+    "webpack-cli": "^4.8.0"
+  }
+}
