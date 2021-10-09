@@ -104,7 +104,8 @@ class Querylang07CommandCreator {
         : `LIMIT ${this._limitParam.toString()} `) +
       (this._offsetParam == undefined
         ? " "
-        : `OFFSET ${this._offsetParam.toString()} ` + `")`)
+        : `OFFSET ${this._offsetParam.toString()} `) +
+      `")`
     );
   }
 }
