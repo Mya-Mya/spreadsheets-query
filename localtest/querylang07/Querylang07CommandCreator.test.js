@@ -44,14 +44,23 @@ describe("Querylang07CommandCreator", () => {
   });
   it.only("Creates command", () => {
     const command = new Querylang07CommandCreator(
-      "table",
-      createColumnProfilesFromNames(["name", "age", "dept"]),
+      "dbtable",
+      createColumnProfilesFromNames([
+        "name",
+        "dept",
+        "lunchTime",
+        "salary",
+        "hireDate",
+        "age",
+        "isSenior",
+        "seniorityStartTime",
+      ]),
       ["name", "age"]
     )
-      .where(new Comparing("dept", ComparingTypes.STRING_CONTAINS, "et"))
+      .where(new Comparing("dept", ComparingTypes.STRING_EQUALS, "Eng"))
       .orderby("name", OrderbyTypes.ASC)
       .limit(100)
-      .offset(3)
+      .offset(1)
       .create();
     console.log(command);
   });
