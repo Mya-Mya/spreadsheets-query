@@ -91,6 +91,7 @@ class Querylang07 {
   }
   objects() {
     if (!this._ran) this.run();
+    return this._resultObjects;
   }
   arrays() {
     if (!this._ran) this.run();
