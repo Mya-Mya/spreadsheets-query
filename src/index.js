@@ -9,6 +9,9 @@ import Querylang07 from "./querylang07/Querylang07";
 global.select = (spreadsheetId, sheetName, selectingColumnNames) =>
   new Querylang07(spreadsheetId, sheetName, selectingColumnNames);
 
+import QueryExecutor from "./querylang07/QueryExecutor";
+global.QueryExecutor = QueryExecutor;
+
 import WhereClause from "./whereclause/WhereClause";
 import And from "./whereclause/And";
 import Or from "./whereclause/Or";
