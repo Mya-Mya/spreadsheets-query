@@ -4,6 +4,7 @@ import Querylang07CommandCreator from "./Querylang07CommandCreator";
 import { createOrGetSheet, getHeaderValues } from "../spreadsheetUtils";
 import { createColumnProfilesFromNames } from "../columns";
 import _ from "underscore";
+import QueryExecutor from "./QueryExecutor";
 class Querylang07 {
   /**
    *
@@ -12,18 +13,21 @@ class Querylang07 {
    * @param {String[]} selectingColumnNames
    */
   constructor(spreadsheetId, sheetName, selectingColumnNames) {
-    const ss = SpreadsheetApp.openById(spreadsheetId);
+    this._spreadsheet = SpreadsheetApp.openById(spreadsheetId);
 
-    this._workingSheet = createOrGetSheet(ss, "__spreadsheets-query_uses");
     this._selectingColumnNames = selectingColumnNames;
     this._ran = false;
     this._resultArrays = undefined;
     this._resultObjects = undefined;
 
-    const targetSheet = ss.getSheetByName(sheetName);
-    const headerValues = getHeaderValues(targetSheet);
+    this._targetSheetName = sheetName;
+    this._targetSheet = this._spreadsheet.getSheetByName(sheetName);
+    const headerValues = getHeaderValues(this._targetSheet);
     const columnProfiles = createColumnProfilesFromNames(headerValues);
 
+    const sortedColumnProfiles = _.sortBy(columnProfiles, "base0Index");
+    this._mostLeftColumnID = _.first(sortedColumnProfiles).id;
+    this._mostRightColumnID = _.last(sortedColumnProfiles).id;
     /**
      * @type {Querylang07CommandCreator}
      */
@@ -32,6 +36,9 @@ class Querylang07 {
       columnProfiles,
       selectingColumnNames
     );
+
+    this._workingSheetName = `temp_spreadsheets-query_${Utilities.getUuid()}`;
+    this._deleteWorkingSheetOnFinished = true;
   }
   /**
    *
@@ -54,6 +61,24 @@ class Querylang07 {
   }
   /**
    *
+   * @param {String} columnName
+   * @returns {Querylang07}
+   */
+  asc(columnName) {
+    this.orderby(columnName, OrderbyTypes.ASC);
+    return this;
+  }
+  /**
+   *
+   * @param {String} columnName
+   * @returns {Querylang07}
+   */
+  desc(columnName) {
+    this.orderby(columnName, OrderbyTypes.DESC);
+    return this;
+  }
+  /**
+   *
    * @param {Number} limit
    * @returns {Querylang07}
    */
@@ -72,22 +97,30 @@ class Querylang07 {
   hasRan() {
     return this._ran;
   }
+  workingSheetName(workingSheetName) {
+    this._workingSheetName = workingSheetName;
+    this._deleteWorkingSheetOnFinished = false;
+    return this;
+  }
   run() {
-    const command = this._commandCreator.create();
-    this._workingSheet.getRange(1, 1).setValue(command);
-    const values = this._workingSheet
-      .getRange(
-        1,
-        1,
-        this._workingSheet.getLastRow(),
-        this._workingSheet.getLastColumn()
-      )
-      .getValues();
-    this._resultArrays = values.splice(1);
+    const querylang07Command = this._commandCreator.create();
+    const executor = new QueryExecutor(
+      this._spreadsheet,
+      this._workingSheetName,
+      this._targetSheetName,
+      this._mostLeftColumnID,
+      this._mostRightColumnID,
+      this._targetSheet.getLastRow(),
+      this._deleteWorkingSheetOnFinished
+    );
+    executor.execute(querylang07Command);
+    this._resultArrays = executor.getResultContentRows();
+    const resultHeaderRow = executor.getResultHeaderRow();
     this._resultObjects = this._resultArrays.map((resultArray) =>
-      _.object(this._selectingColumnNames, resultArray)
+      _.object(resultHeaderRow, resultArray)
     );
     this._ran = true;
+    return;
   }
   objects() {
     if (!this._ran) this.run();

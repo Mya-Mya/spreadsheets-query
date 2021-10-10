@@ -89,23 +89,21 @@ class Querylang07CommandCreator {
   }
   create() {
     return (
-      `=QUERY(${this._rangeSelector},` +
-      `"SELECT ${this._selectClauseText} ` +
+      `SELECT ${this._selectClauseText} ` +
       (this._whereClauseText == undefined
-        ? " "
+        ? ""
         : `WHERE ${this._whereClauseText} `) +
       (this._orderbyClauseTexts.length == 0
-        ? " "
+        ? ""
         : this._orderbyClauseTexts
             .map((text) => `ORDER BY ${text} `)
             .join("")) +
       (this._limitParam == undefined
-        ? " "
+        ? ""
         : `LIMIT ${this._limitParam.toString()} `) +
       (this._offsetParam == undefined
-        ? " "
-        : `OFFSET ${this._offsetParam.toString()} `) +
-      `")`
+        ? ""
+        : `OFFSET ${this._offsetParam.toString()}`)
     );
   }
 }
