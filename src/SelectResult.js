@@ -34,12 +34,25 @@ class SelectResult {
     return this._recordArrays;
   }
   /**
+   *
+   * @returns {any[][]}
+   */
+  arrays() {
+    return this.recordArrays();
+  }
+  /**
    * @returns {Object[]}
    */
   recordObjects() {
     return this._recordArrays.map((array) =>
       _.object(this._columnNames, array)
     );
+  }
+  /**
+   * @returns {Object[]}
+   */
+  objects() {
+    return this.recordObjects();
   }
 }
 export default SelectResult;
