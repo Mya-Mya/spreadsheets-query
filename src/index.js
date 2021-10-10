@@ -1,3 +1,6 @@
+import LinearSearcher from "./linearsearcher/LinearSearcher";
+global.LinearSearcher = LinearSearcher;
+
 import Querylang07 from "./querylang07/Querylang07";
 /**
  *
