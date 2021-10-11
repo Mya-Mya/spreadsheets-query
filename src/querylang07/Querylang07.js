@@ -1,3 +1,4 @@
+//@ts-check
 import WhereClause from "../whereclause/WhereClause";
 import OrderbyTypes from "./OrderbyTypes";
 import Querylang07CommandCreator from "./Querylang07CommandCreator";
@@ -5,6 +6,7 @@ import { createOrGetSheet, getHeaderValues } from "../spreadsheetUtils";
 import { createColumnProfilesFromNames } from "../columns";
 import _ from "underscore";
 import QueryExecutor from "./QueryExecutor";
+import SelectResult from "../SelectResult";
 class Querylang07 {
   /**
    *
@@ -17,8 +19,7 @@ class Querylang07 {
 
     this._selectingColumnNames = selectingColumnNames;
     this._ran = false;
-    this._resultArrays = undefined;
-    this._resultObjects = undefined;
+    this._selectResult = undefined;
 
     this._targetSheetName = sheetName;
     this._targetSheet = this._spreadsheet.getSheetByName(sheetName);
@@ -102,6 +103,10 @@ class Querylang07 {
     this._deleteWorkingSheetOnFinished = false;
     return this;
   }
+  /**
+   *
+   * @returns {SelectResult}
+   */
   run() {
     const querylang07Command = this._commandCreator.create();
     const executor = new QueryExecutor(
@@ -113,22 +118,21 @@ class Querylang07 {
       this._targetSheet.getLastRow(),
       this._deleteWorkingSheetOnFinished
     );
-    executor.execute(querylang07Command);
-    this._resultArrays = executor.getResultContentRows();
-    const resultHeaderRow = executor.getResultHeaderRow();
-    this._resultObjects = this._resultArrays.map((resultArray) =>
-      _.object(resultHeaderRow, resultArray)
-    );
+    this._selectResult = executor.execute(querylang07Command);
     this._ran = true;
-    return;
+    return this._selectResult;
   }
   objects() {
     if (!this._ran) this.run();
-    return this._resultObjects;
+    return this._selectResult.objects();
   }
   arrays() {
     if (!this._ran) this.run();
-    return this._resultArrays;
+    return this._selectResult.arrays();
+  }
+  result() {
+    if (!this._ran) this.run();
+    return this._selectResult;
   }
 }
 
