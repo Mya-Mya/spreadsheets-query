@@ -18,6 +18,23 @@ class LinearSearcher {
     const values = this._getAllValuesFromSheet().filter(predicate);
     return new SelectResult(headerValues, values);
   }
+
+  /**
+   *
+   * @param {function(any[]):boolean} predicate
+   * @returns {Number}
+   */
+  deleteIf(predicate) {
+    let indexes = [];
+    this._getAllValuesFromSheet().forEach((value, index) => {
+      if (predicate(value)) indexes.push(index + 2);
+    });
+    indexes
+      .sort()
+      .reverse()
+      .forEach((index) => this._sheet.deleteRow(index));
+    return indexes.length;
+  }
   /**
    *
    * @returns {any[][]}
