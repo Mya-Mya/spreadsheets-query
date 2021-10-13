@@ -23,16 +23,16 @@ import ComparingTypes from "./whereclause/ComparingTypes";
 
 /**
  *
- * @param {WhereClause} whereClause
+ * @param {WhereClause[]} whereClauses
  * @returns {And}
  */
-global.and = (whereClause) => new And(whereClause);
+global.and = (whereClauses) => new And(whereClauses);
 /**
  *
- * @param {WhereClause} whereClause
+ * @param {WhereClause[]} whereClauses
  * @returns {Or}
  */
-global.or = (whereClause) => new Or(whereClause);
+global.or = (whereClauses) => new Or(whereClauses);
 /**
  * @param {String} columnName
  * @param {ComparingType} comparingType
