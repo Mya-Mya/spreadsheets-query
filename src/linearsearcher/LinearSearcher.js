@@ -5,6 +5,11 @@ import { getHeaderValues } from "../spreadsheetUtils";
 import WhereClause from "../whereclause/WhereClause";
 import predicateFromWhereClause from "./predicateFromWhereClause";
 class LinearSearcher {
+  static fromSpreadsheetIdAndSheetName(spreadsheetId, sheetName) {
+    const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    const sheet = spreadsheet.getSheetByName(sheetName);
+    return new LinearSearcher(sheet);
+  }
   /**
    *
    * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet
