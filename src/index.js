@@ -35,7 +35,6 @@ global.and = (whereClauses) => new And(whereClauses);
 global.or = (whereClauses) => new Or(whereClauses);
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -43,7 +42,6 @@ global.stringEquals = (columnName, value) =>
   new Comparing(columnName, ComparingTypes.STRING_EQUALS, value);
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -52,7 +50,6 @@ global.stringStartsWith = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -61,7 +58,6 @@ global.stringEndsWith = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -70,7 +66,6 @@ global.stringContains = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -79,7 +74,6 @@ global.stringNotEquals = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -88,7 +82,6 @@ global.stringNotStartsWith = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -97,7 +90,6 @@ global.stringNotEndsWith = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -106,7 +98,6 @@ global.stringNotContains = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -115,7 +106,6 @@ global.numberEquals = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -124,7 +114,6 @@ global.numberLagerThan = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -133,7 +122,6 @@ global.numberLagerOrEquals = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -142,7 +130,6 @@ global.numberLessThan = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -151,7 +138,6 @@ global.numberLessOrEquals = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
@@ -160,7 +146,6 @@ global.numberNotEquals = (columnName, value) =>
 
 /**
  * @param {String} columnName
- * @param {ComparingType} comparingType
  * @param {any} value
  * @returns {Comparing}
  */
