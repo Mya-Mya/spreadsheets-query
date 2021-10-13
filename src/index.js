@@ -1,6 +1,32 @@
 import LinearSearcher from "./linearsearcher/LinearSearcher";
 global.LinearSearcher = LinearSearcher;
 
+/**
+ *
+ * @param {String} spreadsheetId
+ * @param {String} sheetName
+ * @param {function(any[]):boolean} predicate
+ * @returns {Number}
+ */
+global.deleteIf = (spreadsheetId, sheetName, predicate) =>
+  LinearSearcher.fromSpreadsheetIdAndSheetName(
+    spreadsheetId,
+    sheetName
+  ).deleteIf(predicate);
+
+/**
+ *
+ * @param {String} spreadsheetId
+ * @param {String} sheetName
+ * @param {WhereClause} whereClause
+ * @returns {Number}
+ */
+global.deleteWhere = (spreadsheetId, sheetName, whereClause) =>
+  LinearSearcher.fromSpreadsheetIdAndSheetName(
+    spreadsheetId,
+    sheetName
+  ).deleteWhere(whereClause);
+
 import Querylang07 from "./querylang07/Querylang07";
 /**
  *
