@@ -1,3 +1,4 @@
+import SelectResult from "../SelectResult";
 import { createOrGetSheet } from "../spreadsheetUtils";
 class QueryExecutor {
   /**
@@ -27,8 +28,6 @@ class QueryExecutor {
     this._bottomRowIndex = Number(bottomRowIndex).toString();
     this._deleteWorkingSheetOnFinished = deleteWorkingSheetOnFinished;
 
-    this._resultHeaderRow = [];
-    this._resultContentRows = [];
     this._executed = false;
   }
   hasExecuted() {
@@ -37,6 +36,7 @@ class QueryExecutor {
   /**
    *
    * @param {String} querylang07Command
+   * @returns {SelectResult}
    */
   execute(querylang07Command) {
     const command =
@@ -48,26 +48,10 @@ class QueryExecutor {
     const values = sheet
       .getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn())
       .getValues();
-
-    this._resultContentRows = values.slice(1);
-    this._resultHeaderRow = values[0];
     if (this._deleteWorkingSheetOnFinished)
       this._spreadsheet.deleteSheet(sheet);
     this._executed = true;
-  }
-  /**
-   *
-   * @returns {String[]}
-   */
-  getResultHeaderRow() {
-    return this._resultHeaderRow;
-  }
-  /**
-   *
-   * @returns {any[][]}
-   */
-  getResultContentRows() {
-    return this._resultContentRows;
+    return SelectResult.fromCombinedArrays(values);
   }
 }
 export default QueryExecutor;
